@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  products    Product[]
+}
+
+model Product {
+  id          Int            @id @default(autoincrement())
+  name        String
+  price       Float
+  description String?
+  categoryId  Int
+  category    Category       @relation(fields: [categoryId], references: [id])
+  colors      ProductColor[]
+  reviews     UserReview[]
+}
+
+model ProductColor {
+  id        Int     @id @default(autoincrement())
+  name      String
+  code      String // You can use HEX codes or any other representation of colors
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  email    String  @unique
+  password String
+  name     String
+  address  String?
+  phone    String?
+  // Add other user-related fields as needed
+
+  reviews UserReview[]
+}
+
+model UserReview {
+  id        Int     @id @default(autoincrement())
+  rating    Int
+  comment   String
+  productId Int
+  userId    Int
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
