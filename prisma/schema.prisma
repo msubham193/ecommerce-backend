@@ -44,6 +44,7 @@ model User {
   name     String
   address  String?
   phone    String?
+  role     String  @default("user")
   // Add other user-related fields as needed
 
   reviews UserReview[]
