@@ -10,22 +10,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Category {
-  id          Int       @id @default(autoincrement())
-  name        String
-  description String?
-  products    Product[]
-}
+// model Category {
+//   id          Int       @id @default(autoincrement())
+//   name        String
+//   description String?
+//   products    Product[]
+// }
 
 model Product {
   id          Int            @id @default(autoincrement())
   name        String
   price       Float
   description String?
-  categoryId  Int
-  category    Category       @relation(fields: [categoryId], references: [id])
+  // categoryId  Int
+  // category    Category       @relation(fields: [categoryId], references: [id])
   colors      ProductColor[]
   reviews     UserReview[]
+  User        User?          @relation(fields: [userId], references: [id])
+  userId      Int?
 }
 
 model ProductColor {
@@ -37,17 +39,17 @@ model ProductColor {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  email    String  @unique
+  id       Int          @id @default(autoincrement())
+  username String       @unique
+  email    String       @unique
   password String
   name     String
   address  String?
   phone    String?
-  role     String  @default("user")
+  role     String       @default("user")
   // Add other user-related fields as needed
-
-  reviews UserReview[]
+  product  Product[]
+  reviews  UserReview[]
 }
 
 model UserReview {
